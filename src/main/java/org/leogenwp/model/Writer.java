@@ -47,7 +47,6 @@ public class Writer {
     }
 
     public Writer() {
-        this.posts = new ArrayList<>();
     }
 
     public void addPost(Post post){
@@ -60,5 +59,17 @@ public class Writer {
                 break;
             }
         }
+    }
+
+    public Writer(Integer id, String firstName, String lastName, List<Post> posts) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.posts = posts;
+    }
+
+    public Writer setPosts(List<Post> posts) {
+        this.posts = posts;
+        return this;
     }
 }

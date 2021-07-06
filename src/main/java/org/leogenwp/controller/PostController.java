@@ -1,5 +1,6 @@
 package org.leogenwp.controller;
 
+import org.leogenwp.model.Label;
 import org.leogenwp.model.Post;
 import org.leogenwp.model.PostStatus;
 import org.leogenwp.repository.PostRepository;
@@ -32,7 +33,7 @@ public class PostController {
     }
 
     public Post save (String postContent) {
-        return postService.save(new Post(postContent));
+        return postService.save(new Post(postContent).setLabels(new ArrayList<Label>()));
     }
 
     public List<Post> getAll() {

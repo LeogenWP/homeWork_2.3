@@ -53,7 +53,7 @@ public class Post {
 
 
     public Post() {
-        this.labels = new ArrayList<>();
+
     }
 
     public Post(String content) {
@@ -67,7 +67,11 @@ public class Post {
 
     public Post setPostStatus(PostStatus postStatus) {
         this.postStatus = postStatus;
+        return this;
+    }
 
+    public Post setLabels(List<Label> labels) {
+        this.labels = labels;
         return this;
     }
 
@@ -82,4 +86,14 @@ public class Post {
             }
         }
     }
+
+    public Post(Integer id, String content, String created, String updated, List<Label> labels, PostStatus postStatus) {
+        this.id = id;
+        this.content = content;
+        this.created = created;
+        this.updated = updated;
+        this.labels = labels;
+        this.postStatus = postStatus;
+    }
+
 }

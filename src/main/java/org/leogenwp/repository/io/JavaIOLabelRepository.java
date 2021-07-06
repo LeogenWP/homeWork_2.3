@@ -1,5 +1,9 @@
 package org.leogenwp.repository.io;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.leogenwp.model.Label;
 import org.leogenwp.repository.LabelRepository;
 import org.leogenwp.CollectionUtils.ConnectDB;
@@ -7,83 +11,102 @@ import java.sql.Connection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 public class JavaIOLabelRepository  implements LabelRepository {
-    private final String getAll = "select id, description from labels";
-    private final String save = "INSERT INTO labels (description) VALUES ('%s')";
-    private final String getById = "select id, description from labels where id = %d";
-    private final String update = "UPDATE labels SET description = '%s' where id = %d";
-    private final String deleteById = "delete from labels where id = %d";
+    private Configuration conf = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Label.class);
+    private SessionFactory sessionFactory = conf.buildSessionFactory();
+    private  Session session = null;
 
     @Override
     public List<Label> getAll() {
         List<Label> labels = new ArrayList<>();
-        try(Connection conn= ConnectDB.getInstance().getConnection();
-            Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(getAll)) {
-            while ( rs.next() ) {
-                labels.add(new Label(rs.getInt("id"),rs.getString("description")));
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            labels = session.createQuery("FROM Label").list();
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
         return labels;
     }
 
     @Override
     public Label save(Label label) {
-        try(Connection conn= ConnectDB.getInstance().getConnection()){
-            Statement statement = conn.createStatement();
-            String sql = String.format(save,label.getName());
-            statement.executeUpdate(sql,Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                label.setId(rs.getInt(1));
-            } else {
-                throw new SQLException("Creating user failed, no ID obtained.");
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(label);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
             }
-
-        } catch(Exception e){ System.out.println(e);}
+        }
         return label;
     }
 
     @Override
     public Label getById(Integer id) {
        Label label = new Label();
-        String sql =String.format(getById,id);
-        try(Connection conn= ConnectDB.getInstance().getConnection();
-            Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(sql)) {
-            while ( rs.next() ) {
-                label.setId(rs.getInt("id"));
-                label.setName(rs.getString("description"));
+       try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+             label = (Label) session.get(Label.class,id);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
        return label;
     }
 
     @Override
     public Label update(Label label) {
-        try(Connection conn= ConnectDB.getInstance().getConnection();
-            Statement statement = conn.createStatement()) {
-            String sql = String.format(update,label.getName(),label.getId());
-            statement.executeUpdate(sql);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(label);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
         return label;
     }
 
     @Override
     public void deleteById(Integer id) {
-        try(Connection conn= ConnectDB.getInstance().getConnection();
-            Statement statement = conn.createStatement()) {
-            String sql = String.format(deleteById,id);
-            statement.executeUpdate(sql);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            Label label = (Label) session.get(Label.class,id);
+            session.remove(label);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
     }
 }

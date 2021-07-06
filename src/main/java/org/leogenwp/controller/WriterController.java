@@ -1,5 +1,6 @@
 package org.leogenwp.controller;
 
+import org.leogenwp.model.Post;
 import org.leogenwp.repository.WriterRepository;
 import org.leogenwp.repository.io.JavaIOPostRepository;
 import org.leogenwp.repository.io.JavaIOWriterRepository;
@@ -9,6 +10,7 @@ import org.leogenwp.service.WriterService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WriterController {
@@ -26,7 +28,7 @@ public class WriterController {
     }
 
     public Writer save (String firstName, String lastName) {
-        return writerService.save(new Writer(firstName, lastName));
+        return writerService.save(new Writer(firstName, lastName).setPosts(new ArrayList<Post>()));
     }
 
     public List<Writer> getAll() {

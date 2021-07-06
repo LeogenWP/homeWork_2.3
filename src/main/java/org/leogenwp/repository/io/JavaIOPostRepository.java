@@ -40,6 +40,7 @@ public class JavaIOPostRepository implements PostRepository {
             ResultSet rs = statement.executeQuery(getAll);
             while ( rs.next() ) {
                 Post post = new Post();
+                post.setLabels(new ArrayList<Label>());
                if (posts.size() > 0) {
                    if ( (rs.getInt(1)==posts.get(posts.size()-1).getId())) {
                        post = posts.get(posts.size()-1);
@@ -100,6 +101,7 @@ public class JavaIOPostRepository implements PostRepository {
     @Override
     public Post getById(Integer postId) {
         Post post = new Post();
+        post.setLabels(new ArrayList<Label>());
         try(Connection conn= ConnectDB.getInstance().getConnection();
             Statement statement = conn.createStatement()
         ) {

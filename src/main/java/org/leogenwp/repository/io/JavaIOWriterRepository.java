@@ -38,11 +38,13 @@ public class JavaIOWriterRepository implements WriterRepository {
     @Override
     public List<Writer> getAll() {
         List<Writer> writers = new ArrayList<>();
+
         try (Connection conn = ConnectDB.getInstance().getConnection();
              Statement statement = conn.createStatement();
              ResultSet rs = statement.executeQuery(getAll)) {
             while (rs.next()) {
                 Writer writer = new Writer();
+                writer.setPosts(new ArrayList<Post>());
                 if (writers.size() > 0) {
                     if ((rs.getInt(1) == writers.get(writers.size() - 1).getId())) {
                         writer = writers.get(writers.size() - 1);
@@ -120,6 +122,7 @@ public class JavaIOWriterRepository implements WriterRepository {
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 Writer writer = new Writer();
+                writer.setPosts(new ArrayList<Post>());
                 if (writers.size() > 0) {
                     if ((rs.getInt(1) == writers.get(writers.size() - 1).getId())) {
                         writer = writers.get(writers.size() - 1);
