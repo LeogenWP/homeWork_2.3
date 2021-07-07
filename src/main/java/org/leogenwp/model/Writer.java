@@ -1,9 +1,15 @@
 package org.leogenwp.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "writers",schema = "writer2")
 public class Writer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Integer id;
     private String firstName;
     private String lastName;

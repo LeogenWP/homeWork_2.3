@@ -6,12 +6,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.leogenwp.model.Label;
 import org.leogenwp.repository.LabelRepository;
-import org.leogenwp.CollectionUtils.ConnectDB;
-import java.sql.Connection;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 public class JavaIOLabelRepository  implements LabelRepository {
     private Configuration conf = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Label.class);

@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
     `content` varchar(255),
     `created` varchar(255),
     `updated` varchar(255),
-    `post_status_id` varchar(255)
+    `post_status` varchar(255)
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 CREATE TABLE IF NOT EXISTS `writers_posts` (

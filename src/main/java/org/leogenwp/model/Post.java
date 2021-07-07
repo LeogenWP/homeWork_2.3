@@ -1,14 +1,35 @@
 package org.leogenwp.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "posts",schema = "writer2")
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Integer id;
+
+    @Column(name = "content")
     private String content;
+
+    @Column(name = "created")
     private String created;
+
+    @Column(name = "updated")
     private String updated;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "posts_labels",
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "label_id") }
+    )
     private List<Label> labels;
+
+    @Column(name = "post_status")
     private PostStatus postStatus;
 
     public int getId() {
@@ -50,7 +71,6 @@ public class Post {
     public List<Label> getLabels() {
         return labels;
     }
-
 
     public Post() {
 
