@@ -21,7 +21,9 @@
         <property name="hibernate.connection.password">
             admin
         </property>
-        <property name="connection.pool_size">2</property>
+        <property name="connection.pool_size">1</property>
+        <property name="show_sql">true</property>
+
 
         <mapping class="org.leogenwp.model.Label"/>
         <mapping class="org.leogenwp.model.Post"/>

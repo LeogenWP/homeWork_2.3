@@ -44,7 +44,7 @@ public class JavaIOPostRepository implements PostRepository {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
-            session.getTransaction().commit();
+            session.getTransaction().rollback();
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -113,12 +113,12 @@ public class JavaIOPostRepository implements PostRepository {
 
     @Override
     public Post update(Post post) {
-        Date now = new Date();
-        String strDate = sdfDate.format(now);
-        post.setUpdated(strDate);
         try {
             session = sessionFactory.openSession();
             session.beginTransaction();
+            Date now = new Date();
+            String strDate = sdfDate.format(now);
+            post.setUpdated(strDate);
             session.update(post);
             session.getTransaction().commit();
         } catch (HibernateException e) {

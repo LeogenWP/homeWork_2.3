@@ -21,7 +21,7 @@ public class Post {
     @Column(name = "updated")
     private String updated;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(fetch = FetchType.EAGER , cascade = { CascadeType.ALL })
     @JoinTable(
             name = "posts_labels",
             joinColumns = { @JoinColumn(name = "post_id") },

@@ -44,8 +44,9 @@ public class PostController {
                 System.out.println(post.getId() + ";" + post.getContent() +
                         ";" + post.getCreated() + ";" + post.getUpdated() + ";" +
                         post.getLabels().toString() + ";" + post.getPostStatus());
-                //System.out.println(post.toString());
+
             }
+
             //return postRepository.getAll();
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,6 +80,7 @@ public class PostController {
             postId = reader.readLine();
             Post post = postService.getById(Integer.parseInt(postId));
             while (true) {
+                System.out.println("Type command");
                 string = reader.readLine();
                 if (string.equals("return")) {
                     return post;
@@ -104,7 +106,7 @@ public class PostController {
                 } else if (string.equals("save")) {
                     Date now = new Date();
                     post.setUpdated(sdfDate.format(now));
-                    return  postService.update(post);
+                    return  postService.save(post);
                 }
             }
         } catch (IOException e) {

@@ -1,6 +1,7 @@
 package org.leogenwp.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "labels",schema = "writer2")
@@ -11,6 +12,7 @@ public class Label {
     private Integer id;
     @Column(name = "description")
     private String name;
+
 
     public int getId() {
         return id;
@@ -39,6 +41,9 @@ public class Label {
         this.name = name;
         this.id = id;
     }
+
+
+
     public Label() {
     }
 
