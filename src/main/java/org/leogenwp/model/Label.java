@@ -1,6 +1,7 @@
 package org.leogenwp.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,7 +13,23 @@ public class Label {
     private Integer id;
     @Column(name = "description")
     private String name;
+    @ManyToMany (mappedBy = "labels")
+    private List<Post> posts = new ArrayList<>();
 
+
+    public Label setId(Integer id) {
+        this.id = id;
+        return this;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public Label setPosts(List<Post> posts) {
+        this.posts = posts;
+        return this;
+    }
 
     public int getId() {
         return id;

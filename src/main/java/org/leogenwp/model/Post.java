@@ -27,7 +27,7 @@ public class Post {
             joinColumns = { @JoinColumn(name = "post_id") },
             inverseJoinColumns = { @JoinColumn(name = "label_id") }
     )
-    private List<Label> labels;
+    private List<Label> labels = new ArrayList<>();
 
     @Column(name = "post_status")
     private PostStatus postStatus;
@@ -78,7 +78,6 @@ public class Post {
 
     public Post(String content) {
         this.content = content;
-        this.labels = new ArrayList<>();
     }
 
     public PostStatus getPostStatus() {
