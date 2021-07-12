@@ -21,7 +21,7 @@ public class Post {
     @Column(name = "updated")
     private String updated;
 
-    @ManyToMany(fetch = FetchType.EAGER , cascade = { CascadeType.ALL })
+    @ManyToMany  (fetch = FetchType.LAZY , cascade = { CascadeType.ALL })
     @JoinTable(
             name = "posts_labels",
             joinColumns = { @JoinColumn(name = "post_id") },
@@ -29,6 +29,7 @@ public class Post {
     )
     private List<Label> labels = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "post_status")
     private PostStatus postStatus;
 

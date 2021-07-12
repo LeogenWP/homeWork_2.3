@@ -11,6 +11,10 @@ import org.leogenwp.repository.LabelRepository;
 import org.leogenwp.repository.PostRepository;
 import org.leogenwp.CollectionUtils.ConnectDB;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,20 +28,15 @@ public class JavaIOPostRepository implements PostRepository {
     private SessionFactory sessionFactory = conf.buildSessionFactory();
     private  Session session = null;
 
+    private EntityManager em = org.leogenwp.CollectionUtils.EntityManager.get();
 
-    private final String save = "INSERT INTO posts (content,created,updated,post_status) VALUES('%s','%s','%s','%s')";
-    private final String getById = "SELECT b.id as post_id ,content,created,updated,post_status,c.id as label_id ,c.description " +
-            "                    FROM posts_labels a right join  posts b" +
-            "                    on a.post_id = b.id" +
-            "                    left join labels c" +
-            "                    on a.label_id = c.id where b.id = %d";
-    private final String update = "UPDATE posts SET content ='%s',updated = '%s' ,post_status = '%s' where id = %d";
-    private final String deleteById = "delete from labels where id = %d";
 
     @Override
     public List<Post> getAll() {
-        List<Post> posts = new ArrayList<>();
-        try {
+        List<Post> posts;
+        Query query = em.createQuery("SELECT  e FROM Post e left JOIN FETCH e.labels t");
+        posts =query.getResultList();
+       /* try {
             session = sessionFactory.openSession();
             session.beginTransaction();
             posts = session.createQuery("FROM Post").list();
@@ -49,7 +48,7 @@ public class JavaIOPostRepository implements PostRepository {
             if (session != null && session.isOpen()) {
                 session.close();
             }
-        }
+        }*/
         return posts;
     }
 
@@ -79,34 +78,19 @@ public class JavaIOPostRepository implements PostRepository {
 
     @Override
     public Post getById(Integer postId) {
-        Post post = new Post();
-        post.setLabels(new ArrayList<Label>());
-        try(Connection conn= ConnectDB.getInstance().getConnection();
-            Statement statement = conn.createStatement()
-        ) {
-            String sql =String.format(getById,postId);
-            ResultSet rs = statement.executeQuery(sql);
-            while ( rs.next() ) {
-                post.setId(rs.getInt(1));
-                post.setContent(rs.getString("content"));
-                post.setCreated(rs.getString("created"));
-                post.setUpdated(rs.getString("updated"));
-                if (rs.getString("post_status").equals("ACTIVE")) {
-                    post.setPostStatus(PostStatus.ACTIVE);
-                } else if (rs.getString("post_status").equals("UNDER_REVIEW")) {
-                    post.setPostStatus(PostStatus.UNDER_REVIEW);
-                } else if (rs.getString("post_status").equals("DELETED")) {
-                    post.setPostStatus(PostStatus.DELETED);
-                } else {
-                    post.setPostStatus(PostStatus.ACTIVE);
-                }
-                if(rs.getInt(6)!=0){
-                    Label label = new Label(rs.getInt(6),rs.getString(7));
-                    post.addLabel(label);
-                }
+        Post post = null;
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            post = (Post) session.get(Post.class,postId);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
         return post;
     }

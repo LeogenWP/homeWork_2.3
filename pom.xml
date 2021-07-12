@@ -29,6 +29,11 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.5.2.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.5.2.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>

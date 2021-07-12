@@ -106,7 +106,7 @@ public class PostController {
                 } else if (string.equals("save")) {
                     Date now = new Date();
                     post.setUpdated(sdfDate.format(now));
-                    return  postService.save(post);
+                    return  postService.update(post);
                 }
             }
         } catch (IOException e) {
