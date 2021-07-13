@@ -4,15 +4,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.leogenwp.CollectionUtils.SesFactory;
-import org.leogenwp.model.Post;
 import org.leogenwp.model.Writer;
 import org.leogenwp.repository.WriterRepository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
