@@ -4,14 +4,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.leogenwp.CollectionUtils.SesFactory;
 import org.leogenwp.model.Label;
 import org.leogenwp.repository.LabelRepository;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JavaIOLabelRepository  implements LabelRepository {
-    private Configuration conf = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Label.class);
-    private SessionFactory sessionFactory = conf.buildSessionFactory();
+    //private Configuration conf = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Label.class);
+    private SessionFactory sessionFactory = SesFactory.get();      //conf.buildSessionFactory();
     private  Session session = null;
 
     @Override

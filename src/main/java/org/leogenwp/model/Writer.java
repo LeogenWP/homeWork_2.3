@@ -11,8 +11,11 @@ public class Writer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @OneToMany (mappedBy = "writerId", cascade = CascadeType.ALL)
     private List<Post> posts;
 
     public int getId() {

@@ -21,6 +21,9 @@ public class Post {
     @Column(name = "updated")
     private String updated;
 
+    @Column(name = "writer_id")
+    private Integer writerId;
+
     @ManyToMany  (fetch = FetchType.LAZY , cascade = { CascadeType.ALL })
     @JoinTable(
             name = "posts_labels",

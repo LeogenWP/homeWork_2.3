@@ -11,5 +11,9 @@ public class SesFactory {
             .addAnnotatedClass(Label.class)
             .addAnnotatedClass(Post.class)
             .addAnnotatedClass(Writer.class);
-    private SessionFactory sessionFactory = conf.buildSessionFactory();
+    private static SessionFactory sessionFactory = conf.buildSessionFactory();
+
+    public static SessionFactory get() {
+        return sessionFactory;
+    }
 }

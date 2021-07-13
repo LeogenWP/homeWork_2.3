@@ -11,16 +11,9 @@ CREATE TABLE IF NOT EXISTS `posts` (
     `content` varchar(255),
     `created` varchar(255),
     `updated` varchar(255),
-    `post_status` varchar(255)
-)ENGINE=InnoDB DEFAULT CHARSET=UTF8;
-
-CREATE TABLE IF NOT EXISTS `writers_posts` (
-
-    `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `writer_id` int,
-    `post_id` int,
-    FOREIGN KEY (writer_id) REFERENCES writers(id),
-    FOREIGN KEY (post_id) REFERENCES posts(id)
+    `post_status` varchar(255),
+    'writer_id' int,
+    FOREIGN KEY (writer_id) REFERENCES writers(id)
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 
