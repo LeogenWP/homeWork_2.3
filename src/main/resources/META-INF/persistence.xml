@@ -8,6 +8,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 <description>Hibernate EntityManager Demo</description>
 <class>org.leogenwp.model.Label</class>
 <class>org.leogenwp.model.Post</class>
+    <class>org.leogenwp.model.Writer</class>
 <exclude-unlisted-classes>true</exclude-unlisted-classes>
 <properties>
     <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>

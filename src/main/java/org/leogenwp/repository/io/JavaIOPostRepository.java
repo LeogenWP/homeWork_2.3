@@ -15,8 +15,8 @@ import java.util.List;
 public class JavaIOPostRepository implements PostRepository {
     private final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SessionFactory sessionFactory = SesFactory.get();
-    private  Session session = null;
     private EntityManager em = org.leogenwp.CollectionUtils.EntityManager.get();
+    private  Session session = null;
 
 
     @Override
@@ -86,7 +86,7 @@ public class JavaIOPostRepository implements PostRepository {
     public void deleteById (Integer id){
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        Query query = em.createQuery("Delete  FROM Post   WHERE id = ?1");
+        Query query = em.createQuery("Delete FROM Post WHERE id = ?1");
         query.setParameter(1,id);
         query.executeUpdate();
         transaction.commit();
