@@ -98,18 +98,6 @@ public class Post {
         return this;
     }
 
-    public void addLabel(Label label){
-        this.labels.add(label);
-    }
-    public void removeLabel(Integer id){
-        for (int i = 0; i < this.labels.size(); i++){
-            if(id == this.labels.get(i).getId()){
-                this.labels.remove(i);
-                break;
-            }
-        }
-    }
-
     public Post(Integer id, String content, String created, String updated, List<Label> labels, PostStatus postStatus) {
         this.id = id;
         this.content = content;

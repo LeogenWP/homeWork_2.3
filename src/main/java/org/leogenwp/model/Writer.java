@@ -58,17 +58,6 @@ public class Writer {
     public Writer() {
     }
 
-    public void addPost(Post post){
-        this.posts.add(post);
-    }
-    public void removePost(Integer id) {
-        for (int i = 0; i < this.posts.size(); i++) {
-            if (id == this.posts.get(i).getId()) {
-                this.posts.remove(i);
-                break;
-            }
-        }
-    }
 
     public Writer(Integer id, String firstName, String lastName, List<Post> posts) {
         this.id = id;

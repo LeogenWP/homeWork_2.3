@@ -1,5 +1,6 @@
 package org.leogenwp.CollectionUtils;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.leogenwp.model.Label;
@@ -12,8 +13,12 @@ public class SesFactory {
             .addAnnotatedClass(Post.class)
             .addAnnotatedClass(Writer.class);
     private static SessionFactory sessionFactory = conf.buildSessionFactory();
+    private static Session session;
 
-    public static SessionFactory get() {
-        return sessionFactory;
+    public static Session getSession() {
+        if(!session.isOpen()) {
+            session = sessionFactory.openSession();
+        }
+        return session;
     }
 }

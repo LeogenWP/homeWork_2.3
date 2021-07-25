@@ -2,7 +2,6 @@ package org.leogenwp.repository.io;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.leogenwp.CollectionUtils.SesFactory;
 import org.leogenwp.model.Post;
 import org.leogenwp.model.PostStatus;
@@ -14,10 +13,7 @@ import java.util.List;
 
 public class JavaIOPostRepository implements PostRepository {
     private final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private SessionFactory sessionFactory = SesFactory.get();
     private EntityManager em = org.leogenwp.CollectionUtils.EntityManager.get();
-    private  Session session = null;
-
 
     @Override
     public List<Post> getAll() {
@@ -38,18 +34,12 @@ public class JavaIOPostRepository implements PostRepository {
         post.setUpdated(strDate);
         post.setPostStatus(PostStatus.ACTIVE);
 
-        try {
-            session = sessionFactory.openSession();
+        try(Session session = SesFactory.getSession()){
             session.beginTransaction();
             session.save(post);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
-            session.getTransaction().rollback();
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
         }
         return post;
     }
@@ -62,8 +52,7 @@ public class JavaIOPostRepository implements PostRepository {
 
     @Override
     public Post update(Post post) {
-        try {
-            session = sessionFactory.openSession();
+        try(Session session = SesFactory.getSession()) {
             session.beginTransaction();
             Date now = new Date();
             String strDate = sdfDate.format(now);
@@ -72,13 +61,7 @@ public class JavaIOPostRepository implements PostRepository {
             session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
         }
-
         return post;
     }
 
